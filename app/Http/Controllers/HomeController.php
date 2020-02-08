@@ -205,6 +205,9 @@ class HomeController extends Controller
 
     public function homeSurveyor($week,$survey)
     {
+        dd('sedang maintenance');
+
+
         $komo=Komoditas::
         whereHas('tugas'. function ($query){
             $query->where('id_instansi', auth::user()->id_instansi)->get();
