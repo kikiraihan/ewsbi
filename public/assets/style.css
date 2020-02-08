@@ -1,0 +1,179 @@
+/*
+    DEMO STYLE
+*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+/* body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+    font-size: 0.98em;
+    font-weight: 300;
+    line-height: 1.5em;
+} */
+
+/* p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+} */
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); */
+    box-shadow:none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: none;
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+    border-left: none;
+    background: rgb(255, 255, 255);
+    color: rgb(104, 104, 104);
+    transition: all 0.3s;
+
+}
+
+#sidebar.active {
+    margin-left: 0px;
+    margin-left: -190px;
+    /* min-width: 70px;
+    max-width: 70px; */
+}
+
+
+#sidebar ul li a {
+    padding: 10px 24px;
+    font-size: 1em;
+    text-align: justify;
+    display: block;
+    color: rgb(158, 158, 158);
+}
+
+#sidebar ul li a:hover {
+    color: rgb(88, 88, 88);
+    /* background: rgb(112, 112, 112); */
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: rgb(27, 27, 27);
+    /* background: #f6f6f6; */
+}
+
+#sidebar a[data-toggle="collapse"] {
+    position: relative;
+}
+#pageSubmenu a{
+    margin-left: 15px;
+}
+#pageSubmenu li{
+    background: rgb(248, 248, 248);
+}
+
+
+#sidebar .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+}
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+/* .footer{
+    min-height: 10vh;
+} */
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -200px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+.navbar-laravel {
+    background-color: #fff;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); */
+    /* border: rgba(0, 0, 0, 0.04); */
+    padding: 0.1em;
+}
+
+
+[class^="col"]{
+	padding: 0.4em;
+	/*border: 1px solid rgba(86,61,124,0.2);*/
+	/*padding: 0.1em;*/
+}
+[class^="card-header"]{
+	padding: 0.2em 0.4em;
+}
+[class^="card-footer"]{
+	padding: 0.5em;
+}
