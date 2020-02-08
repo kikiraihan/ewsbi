@@ -205,6 +205,7 @@ class HomeController extends Controller
 
     public function homeSurveyor($week,$survey)
     {
+        echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
         dd('sedang maintenance');
 
 
