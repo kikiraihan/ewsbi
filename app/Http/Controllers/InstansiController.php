@@ -11,7 +11,7 @@ class InstansiController extends Controller
     public function index()
     {
         $instansi=Instansi::all();
-        $columns = $instansi[0]->getFillable();
+        $columns = Instansi::first()->getFillable();
         // dd($columns);
 
         return view('instansi.master',compact(['instansi','columns']));

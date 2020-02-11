@@ -16,7 +16,7 @@ class KomoditasController extends Controller
     {
 
         $komoditas=Komoditas::all();
-        $columns = $komoditas[0]->getFillable();
+        $columns = Komoditas::first()->getFillable();
 
         return view('komoditas.master',compact(['komoditas','columns']));
 

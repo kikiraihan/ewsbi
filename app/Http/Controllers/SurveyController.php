@@ -52,12 +52,12 @@ class SurveyController extends Controller
 
     public function mylist()
     {
-        echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
-        dd('sedang maintenance');
+        // echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
+        // dd('sedang maintenance');
 
         $week=Carbon::now()->startOfWeek()->format('Y-m-d H:i');
 
-        $survey=Survey::with(['user','instansi','komoditas'])
+        $survey=Survey::with(['user','tugas'])
         ->where('id_user', Auth::user()->id )
         ->orderBy('counted_at','ASC')
         ->get()

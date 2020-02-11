@@ -15,7 +15,7 @@ class LokasiController extends Controller
     public function index()
     {
         $lokasi=Lokasi::all();
-        $columns = $lokasi[0]->getFillable();
+        $columns = Lokasi::first()->getFillable();
 
         return view('lokasi.master',compact(['lokasi','columns']));
     }
