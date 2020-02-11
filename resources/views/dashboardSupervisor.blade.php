@@ -24,7 +24,7 @@
 
                         {{-- /* PROFILE */ --}}
                         <!--Profile Card 4-->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <div class="card ">
                                 {{-- <img class="card-img-top" src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" style="overflow:hidden"> --}}
                                 <div class="card-body">
@@ -64,20 +64,27 @@
 
                                     @foreach ($tugas as $key=>$tgs)
 
+
                                     <p class="card-text">
                                         <small class="text-left  m-2 d-block">
                                             <i class="fas fa-map-marker-alt "></i>
                                             <b>{{$tgs[0]->lokasi->nama}} :</b> {{$tgs[0]->lokasi->alamat}}
                                         </small>
                                     </p>
-                                    <ul class="list-group ">
+                                    <table class="table table-striped table-borderless border border-white-50 table-sm ">
                                         @foreach ($tgs as $t)
-                                        <li class="list-group-item text-left small text-center">
-                                            {{-- Email : <span class="float-right small ">{{auth::user()->email}}</span>  --}}
-                                            {{ $t->komoditas->nama }} - {{ $t->komoditas->satuan }}
-                                        </li>
+                                        <tr class="text-left small text-center">
+                                            <td class="text-left">
+                                                {{-- Email : <span class="float-right small ">{{auth::user()->email}}</span>  --}}
+                                                {{ $t->komoditas->nama }}
+                                            </td>
+                                            <td class="text-right">
+                                                {{ $t->komoditas->satuan }}
+                                            </td>
+                                        </tr>
                                         @endforeach
-                                    </ul>
+                                    </table>
+
 
                                     <br><br>
                                     @endforeach
@@ -98,30 +105,33 @@
 
 
 
-                        <div class="col-md-9 pt-0">
+                        <div class="col-lg-9 pt-0">
                             <div class="row pl-2 pr-2 pt-0 mt-0">
 
+
+
+
                                 {{-- counter survey --}}
-                                <div class="col-md-12">
-                                    <div class="counter row m-0">
-                                        <div class="col-md-12 ">
+                                <div class="col-lg-12 ">
+                                    <div class="counter row m-0 border border-grey">
+                                        <div class="col-lg-12 ">
                                             <b class="text-secondary ">Survey minggu ini</b>
                                         </div>
-                                        <div class="col-md-4 p-4">
+                                        <div class="col-lg-4 p-4">
                                             <h2 class="timer count-title count-number" data-to="{{$jumlahDisurvey}}" data-speed="800"></h2>
                                             <b class="text-success">
                                                 Disurvey-Valid
                                             </b>
                                         </div>
 
-                                        <div class="col-md-4 p-4">
+                                        <div class="col-lg-4 p-4">
                                             <h2 class="timer count-title count-number" data-to="{{$jumlahTugas-$jumlahDisurvey}}" data-speed="800"></h2>
                                             <b class="text-danger">
                                                 Belum Disurvey
                                             </b>
                                         </div>
 
-                                        <div class="col-md-4 p-4  border-left">
+                                        <div class="col-lg-4 p-4  border-left">
                                             <h2 class="timer count-title count-number" data-to="{{$jumlahTugas}}" data-speed="800"></h2>
                                             <b class="text-info">
                                                 Jumlah Tugas
@@ -135,10 +145,63 @@
 
 
 
+
+
+
+                                {{-- Tugas Survey --}}
+                                <div class="col-lg-12">
+                                    <div class="card  bg-light">
+                                        <div class="card-body">
+
+
+                                            <h5>Tugas Survey</h5><br>
+
+                                            <div class="row">
+
+                                                @foreach ($tugas as $key=>$tgs)
+
+                                                <div class="col-lg-4 p-2">
+                                                    <p class="card-text">
+                                                        <small class="text-left  m-2 d-block">
+                                                            <i class="fas fa-map-marker-alt "></i>
+                                                            <b>{{$tgs[0]->lokasi->nama}} :</b> {{$tgs[0]->lokasi->alamat}}
+                                                        </small>
+                                                    </p>
+                                                    <table class="table table-striped table-borderless border border-white-50 table-sm ">
+                                                        @foreach ($tgs as $t)
+                                                        <tr class="text-left small">
+                                                            <td class="text-left">
+                                                                {{-- Email : <span class="float-right small ">{{auth::user()->email}}</span>  --}}
+                                                                {{ $t->komoditas->nama }}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                {{ $t->komoditas->satuan }}
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+
+                                                <br><br>
+                                                @endforeach
+                                            </div>
+
+
+                                            {{-- <button class="btn btn-sm btn-block mt-4 "></button> --}}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
                                 {{-- Daftar Komunitas --}}
-                                <div class="col-md-12">
-                                    <div class="counter row m-0">
-                                        <div class="col-md-12 ">
+                                <div class="col-lg-12">
+                                    <div class="counter row m-0 border border-grey">
+                                        <div class="col-lg-12 ">
                                             <b class="text-secondary"> Survey </b>
                                         </div>
 
@@ -162,16 +225,16 @@
                                                 <i class="fas fa-long-arrow-alt-down"></i>
                                                 @endif
                                                 {{$s->komoditas->nama}}
-                                                </b>
-                                                {{-- <b class="title-counter">Rp.</b> --}}
-                                                <h2 class="timer count-title count-number" data-to="{{$s->survey[0]->harga}}" data-speed="1500"></h2>
-                                                <p class="count-text ">
-                                                    Rupiah/{{$s->komoditas->satuan}}
-                                                    {{-- Naik 10% --}}
-                                                </p>
-                                            </div>
+                                            </b>
+                                            {{-- <b class="title-counter">Rp.</b> --}}
+                                            <h2 class="timer count-title count-number" data-to="{{$s->survey[0]->harga}}" data-speed="1500"></h2>
+                                            <p class="count-text ">
+                                                Rupiah/{{$s->komoditas->satuan}}
+                                                {{-- Naik 10% --}}
+                                            </p>
                                         </div>
-                                        @endforeach
+                                    </div>
+                                    @endforeach
 
 
 

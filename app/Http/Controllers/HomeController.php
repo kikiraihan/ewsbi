@@ -205,55 +205,57 @@ class HomeController extends Controller
 
     public function homeSurveyor($week,$survey)
     {
-        // echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
-        // dd('sedang maintenance');
+
+        $tgs=TugasSurvey::with(['komoditas'])
+        // ->whereHas('tugas',function ($query) {
+        //     $query
+        //     // ->where('id_lokasi', 3 )
+        //     ;
+        // })
+        ->where('id_instansi', Auth::user()->id_instansi )
+        ->orderBy('id_lokasi','ASC')
+
+        ->get()
+        // ->dd();
+        ;
+        $tugas=$tgs->groupBy('id_lokasi');
+        $jumlahTugas=$tgs->count();
 
 
-        $komo=Komoditas::
-        whereHas('tugas'. function ($query){
-            $query->where('id_instansi', auth::user()->id_instansi)->get();
-        });
-        $komoditas=$komo->split(3);
-        $jumlahKomoditas=$komo->count();
-        dd($komoditas);
-
-
-        // ada masalah di surveyor kalau survey pas2 hari senin dia tdk bisa baca
-
-        $surveyPerKomoditas=Survey::with(['user','instansi','komoditas'])
+        $surveyPerKomoditas=Survey::with('tugas.instansi')
+        ->whereHas('tugas',function ($query) use($week){
+            $query
+            ->where('id_instansi', Auth::user()->id_instansi )
+            // ->orderBy('id_lokasi','ASC')
+            ;
+        })
+        ->where('id_user',Auth::user()->id)
         ->where('counted_at', '>=', $week)
-        ->where('id_instansi', Auth::user()->id_instansi)
-        ->where('id_user', Auth::user()->id)
-        ->orderBy('id_instansi','ASC')
         ->orderBy('counted_at','DESC')
-        ->distinct()
         ->get()
 
-        ->groupBy('id_komoditas')
+        ->groupBy('id_tugas_survey')
+        // ->dd()
         ;
-        // dd($surveyPerKomoditas->toArray());
-        // dd($week);
 
-        foreach ($surveyPerKomoditas as $key => $nilai)
-        {
-            $survey[]=$nilai->sortBy('counted_at')->first();
-            $id_komoditas[]=$key;
-        }
-
-        $jumlahDisurvey=count($survey);
-
-        // dd($id_komoditas);
+        //jumlah grup id_tugas_survey yang terbentuk merupakan jumlah di survey
+        $jumlahDisurvey=$surveyPerKomoditas->keys()->count();
 
 
 
         // $chart=$this->chartUser();
-        return view('dashboardSurveyor',compact(['komoditas','jumlahKomoditas','jumlahDisurvey','survey']));
+        return view('dashboardSurveyor',compact(['tugas','jumlahTugas','jumlahDisurvey','survey']));
     }
 
 
 
     public function test(Faker $faker)
     {
+        $survey=TugasSurvey::where('id_instansi',Auth::user()->id_instansi)->get(['id']);
+        foreach($survey as $s) $isi[]=$s->id;
+        dd();
+
+        $survey->dd();
         $komoditas=Komoditas::with(['instansi'])->where('id',4)->get();
         dd($komoditas[0]->instansi[0]->tugaspivot);
         // dd(Komoditas::find(1));

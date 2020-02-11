@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="container">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header">Dashboard Supervisor</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -32,17 +32,17 @@
                                     <img src="https://randomuser.me/api/portraits/women/14.jpg" alt="profile-image" class="profile rounded-circle mb-4"/>
 
                                     <h5 class="card-title text-capitalize">
-                                        {{auth::user()->name}}
+                                        {{auth::user()->username}}
                                     </h5>
                                     {{-- <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facilis, autem.</p> --}}
                                     <p class="card-text">
                                         <small class="text-muted">
-                                            {{auth::user()->username}}
+                                            {{auth::user()->name}}
                                             {{-- Last updated 3 mins ago --}}
                                         </small>
                                     </p>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item text-left small">Survey : <span class="float-right small ">{{auth::user()->survey->count()}}</span> </li>
+                                        {{-- <li class="list-group-item text-left small">Survey : <span class="float-right small ">{{auth::user()->survey->count()}}</span> </li> --}}
                                         <li class="list-group-item text-left small">Email : <span class="float-right small ">{{auth::user()->email}}</span> </li>
                                         <li class="list-group-item text-left small">Instansi : <span class="float-right small ">{{auth::user()->instansi->nama_instansi}}</span> </li>
                                         <li class="list-group-item text-left small">Otorisasi : <span class="float-right small ">{{auth::user()->kategori}}</span> </li>
@@ -53,7 +53,55 @@
 
                                 </div>
                             </div>
+
+                            <br>
+
+                            <div class="card ">
+                                <div class="card-body">
+
+
+                                    <h5>Tugas Survey</h5><br>
+
+                                    @foreach ($tugas as $key=>$tgs)
+
+
+                                    <p class="card-text">
+                                        <small class="text-left  m-2 d-block">
+                                            <i class="fas fa-map-marker-alt "></i>
+                                            <b>{{$tgs[0]->lokasi->nama}} :</b> {{$tgs[0]->lokasi->alamat}}
+                                        </small>
+                                    </p>
+                                    <table class="table table-striped table-borderless border border-white-50 table-sm ">
+                                        @foreach ($tgs as $t)
+                                        <tr class="text-left small text-center">
+                                            <td class="text-left">
+                                                {{-- Email : <span class="float-right small ">{{auth::user()->email}}</span>  --}}
+                                                {{ $t->komoditas->nama }}
+                                            </td>
+                                            <td class="text-right">
+                                                {{ $t->komoditas->satuan }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </table>
+
+
+                                    <br><br>
+                                    @endforeach
+
+
+                                    {{-- <button class="btn btn-sm btn-block mt-4 "></button> --}}
+
+                                </div>
+                            </div>
+
+
+
                         </div>
+
+
+
+
 
 
 
@@ -64,7 +112,7 @@
                                 <div class="col-md-12">
                                     <div class="counter row m-0">
                                         <div class="col-md-12 ">
-                                            <b class="text-secondary ">Survey minggu ini</b>
+                                            <b class="text-secondary ">Survey saya minggu ini</b>
                                         </div>
                                         <div class="col-md-4 p-4">
                                             <h2 class="timer count-title count-number" data-to="{{$jumlahDisurvey}}" data-speed="800"></h2>
@@ -74,16 +122,16 @@
                                         </div>
 
                                         <div class="col-md-4 p-4">
-                                            <h2 class="timer count-title count-number" data-to="{{$jumlahKomoditas-$jumlahDisurvey}}" data-speed="800"></h2>
+                                            <h2 class="timer count-title count-number" data-to="{{$jumlahTugas-$jumlahDisurvey}}" data-speed="800"></h2>
                                             <b class="text-danger">
                                                 Belum Disurvey
                                             </b>
                                         </div>
 
                                         <div class="col-md-4 p-4  border-left">
-                                            <h2 class="timer count-title count-number" data-to="{{$jumlahKomoditas}}" data-speed="800"></h2>
+                                            <h2 class="timer count-title count-number" data-to="{{$jumlahTugas}}" data-speed="800"></h2>
                                             <b class="text-info">
-                                                Komoditas
+                                                Jumlah Tugas
                                             </b>
                                         </div>
 
@@ -94,51 +142,27 @@
 
 
 
-                                {{-- Daftar Komunitas --}}
-                                <div class="col-md-12">
-                                    <div class="counter row m-0">
-                                        <div class="col-md-12 ">
-                                            <b class="text-secondary ">Daftar Komoditas</b>
-                                        </div>
 
-
-                                        @foreach ($komoditas as $kom)
-                                        <div class="col-md-4 p-4">
-                                            <ul>
-                                                @foreach ($kom as $k)
-                                                <li>{{$k->nama}}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        @endforeach
-
-
-
-
-                                    </div>
-                                </div>
-
-
-                            </div>
                         </div>
-
                     </div>
-                    <br>
-
-
-
-
-
-
-
-
-
 
                 </div>
+                <br>
+
+
+
+
+
+
+
+
+
 
             </div>
+
         </div>
     </div>
+</div>
 </div>
 @endsection
 
