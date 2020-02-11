@@ -14,7 +14,7 @@
                 <div class="container">
                     <div class="card-body">
 
-                        <form action="{{ route('komoditas.update', ['id'=>$model->id]) }}" method="post">
+                        <form action="{{ route('instansi.update', ['id'=>$instansi->id]) }}" method="post">
                             <input type="hidden" name="_method" value="put">
                             {{ csrf_field() }}
 
@@ -23,19 +23,9 @@
                                     <label class="col-sm-2 col-form-label col-form-label-sm text-capitalize" for="{{$col}}">{{$col}} </label>
                                     <div class="col-sm-10">
 
-
-                                        @if ($col=='kategori')
-                                            <select  name="{{$col}}" class="custom-select custom-select-sm {{ $errors->has($col) ? ' is-invalid' : '' }}">
-                                                <option class="m-2" value="">-Pilih-</option>
-                                                <option class="m-2" value="Sandang" {{old($col,$model->$col)=="Sandang"?"selected":"" }}>Sandang</option>
-                                                <option class="m-2" value="Pangan" {{old($col,$model->$col)=="Pangan"?"selected":"" }}>Pangan</option>
-                                                <option class="m-2" value="Papan" {{old($col,$model->$col)=="Papan"?"selected":"" }}>Papan</option>
-                                            </select>
-                                        @else
-                                            <input name="{{$col}}" type="text"
-                                            class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col,$model->$col) }}"
-                                            id="{{$col}}" placeholder="Masukan {{$col}}">
-                                        @endif
+                                        <input name="{{$col}}" type="text"
+                                        class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col,$instansi->$col) }}"
+                                        id="{{$col}}" placeholder="Masukan {{$col}}">
 
                                         @if ($errors->has($col))
                                             <span class="invalid-feedback" role="alert">

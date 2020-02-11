@@ -31,6 +31,7 @@ Route::group(['prefix' => 'user'], function() {
     Route::get('/create', 'UserController@create')->name('user.create');
     Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
     Route::put('/update/{id}', 'UserController@update')->name('user.update');
+    Route::put('/update-bySupervisor/{id}', 'UserController@updateBySupervisor')->name('user.updateBySupervisor');
     // Route::get('/{id}', 'UserController@show')->name('user.show');
     Route::put('/', 'UserController@store')->name('user.store');
     Route::put('/surveyor', 'UserController@storeSurveyor')->name('user.surveyor.store');
@@ -59,6 +60,18 @@ Route::group(['prefix' => 'lokasi'], function() {
     // Route::get('/{id}', 'LokasiController@show')->name('lokasi.show');
     Route::put('/', 'LokasiController@store')->name('lokasi.store');
     Route::delete('/delete/{id}', 'LokasiController@destroy')->name('lokasi.destroy');
+});
+
+//Instansi
+Route::group(['prefix' => 'instansi'], function() {
+    Route::get('/', 'InstansiController@index')->name('instansi');
+    // Route::get('/search', 'InstansiController@search')->name('instansi.search');
+    Route::get('/create', 'InstansiController@create')->name('instansi.create');
+    Route::get('/edit/{id}', 'InstansiController@edit')->name('instansi.edit');
+    Route::put('/update/{id}', 'InstansiController@update')->name('instansi.update');
+    // Route::get('/{id}', 'InstansiController@show')->name('instansi.show');
+    Route::put('/', 'InstansiController@store')->name('instansi.store');
+    Route::delete('/delete/{id}', 'InstansiController@destroy')->name('instansi.destroy');
 });
 
 

@@ -9,9 +9,9 @@
     <div class="row justify-content-center">
         <div class="container">
             <div class="card">
-                <div class="card-header pl-3">Master Komoditas </div>
+                <div class="card-header pl-3">Master Instansi </div>
                 <div class="card-body container">
-                    {{-- <a href="{{ route('komoditas.create') }}" class="btn btn-outline-primary btn-sm border border-white-50">Create +</a>
+                    {{-- <a href="{{ route('instansi.create') }}" class="btn btn-outline-primary btn-sm border border-white-50">Create +</a>
                     <form class="form-inline">
                         <input type="text" class="form-control form-control-sm mr-2" id="inputNama" placeholder="Nama Lengkap">
                         <button type="submit" class="btn btn-primary btn-sm">Sign in</button>
@@ -28,7 +28,7 @@
                                 <div class="container">
                                     <div class="card-body">
 
-                                        <form action="{{ route('komoditas.store') }}" method="post">
+                                        <form action="{{ route('instansi.store') }}" method="post">
                                             <input type="hidden" name="_method" value="put">
                                             {{ csrf_field() }}
 
@@ -97,16 +97,11 @@
 
                                 <tbody class="text-center">
                                     @php $no=0 @endphp
-                                    @foreach ($komoditas as $kat)
+                                    @foreach ($instansi as $ins)
                                     <tr>
                                         <th>{{ ++$no }}</th>
                                         @foreach ($columns as $col)
-
-                                        @if ($col=='kategori')
-                                        <td><span class="badge badge-secondary text-capitalize" style="font-size: 0.9em">{{ $kat->$col }}</span></td>
-                                        @else
-                                        <td>{{ $kat->$col }}</td>
-                                        @endif
+                                        <td>{{ $ins->$col }}</td>
                                         @endforeach
 
                                         <td class="text-center dropdown dropleft">
@@ -116,8 +111,8 @@
                                             </span>
                                             <div class="dropdown-menu">
 
-                                                <a class="dropdown-item small" href="{{ route('komoditas.edit', ['id'=>$kat->id]) }}">Edit</a>
-                                                <form style="display: inline;" method="post" action="{{ route('komoditas.destroy', ['id'=>$kat->id]) }}">
+                                                <a class="dropdown-item small" href="{{ route('instansi.edit', ['id'=>$ins->id]) }}">Edit</a>
+                                                <form style="display: inline;" method="post" action="{{ route('instansi.destroy', ['id'=>$ins->id]) }}">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     {{ csrf_field()}}
                                                     <button class="dropdown-item small text-danger" >Hapus</button>

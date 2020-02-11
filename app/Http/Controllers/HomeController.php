@@ -110,22 +110,18 @@ class HomeController extends Controller
         $taskPerKomoditas=TugasSurvey::with(['instansi','komoditas','lokasi','survey'])
         ->whereHas('survey', function ($query) use($week)
         {
-            return $query->where('counted_at', '>=', $week)//minggu ini
+            return $query
+            ->where('counted_at', '>=', $week)//minggu ini
             // ->where('valid', 1)//yg valid
             ->orderBy('counted_at','DESC')
             ;
         })
-        ->where('id_instansi', 1)
-        ->orderBy('id_instansi','ASC')
-        ->distinct()
+        ->where('id_instansi', Auth::user()->id_instansi)
         ->get()
 
         ->groupBy('id_komoditas')
         // ->dd()
         ;
-
-        // dd($taskPerKomoditas);
-
 
         //setelah diurutkan dan grup per komoditas, kemudian
         //memecah dan mengambil data pertama (paling tinggi tanggal)..
@@ -135,10 +131,8 @@ class HomeController extends Controller
         }
 
         //------------------------------------------------------------------------------------
-        // batas,    masih mo edit yang diatas ini soalnya cuma copy dari admin
+        // batas,    ini untuk counter
         //------------------------------------------------------------------------------------
-
-
 
 
         $tgs=TugasSurvey::with(['komoditas'])
@@ -154,7 +148,7 @@ class HomeController extends Controller
         // ->dd();
         ;
         $tugas=$tgs->groupBy('id_lokasi');
-        $jumlahKomoditas=$tgs->count();
+        $jumlahTugas=$tgs->count();
 
 
         // ada masalah di surveyor kalau survey pas2 hari senin dia tdk bisa baca
@@ -174,39 +168,45 @@ class HomeController extends Controller
             // ->orderBy('id_lokasi','ASC')
             ;
         })
-        // ->where('valid',1)
+        ->where('valid',1)
         ->where('counted_at', '>=', $week)
         ->orderBy('counted_at','DESC')
-        // ->orderBy('id_instansi','ASC')
-        // ->orderBy('counted_at','ASC')
         ->get()
 
-        ->groupBy('id_komoditas')
+        ->groupBy('id_tugas_survey')
+        // ->dd()
         ;
+
+        //jumlah grup id_tugas_survey yang terbentuk merupakan jumlah di survey
+        $jumlahDisurvey=$surveyPerKomoditas->keys()->count();
+
+
+        // dd($surveyPerKomoditas->keys()->count());
+        // dd(array_keys($surveyPerKomoditas->toArray()));
+
         // dd($surveyPerKomoditas->toArray());
         // dd($week);
 
-        foreach ($surveyPerKomoditas as $key => $nilai)
-        {
-            $survey[]=$nilai->sortBy('counted_at')->first();
-            $id_komoditas[]=$key;
-        }
+        // foreach ($surveyPerKomoditas as $key => $nilai)
+        // {
+        //     $survey[]=$nilai->sortBy('counted_at')->first();
+        //     $id_komoditas[]=$key;
+        // }
 
-        $jumlahDisurvey=count($survey);
 
         // dd($id_komoditas);
 
 
 
         // $chart=$this->chartUser();
-        return view('dashboardSupervisor',compact(['tugas','jumlahKomoditas','jumlahDisurvey','survey','isisurvey']));
+        return view('dashboardSupervisor',compact(['tugas','jumlahTugas','jumlahDisurvey','survey','isisurvey']));
     }
 
 
     public function homeSurveyor($week,$survey)
     {
-        echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
-        dd('sedang maintenance');
+        // echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
+        // dd('sedang maintenance');
 
 
         $komo=Komoditas::

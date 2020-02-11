@@ -14,7 +14,7 @@
                 <div class="container">
                     <div class="card-body">
 
-                        <form action="{{ route('komoditas.update', ['id'=>$model->id]) }}" method="post">
+                        <form action="{{ route('tugas_survey.update', ['id'=>$model->id]) }}" method="post">
                             <input type="hidden" name="_method" value="put">
                             {{ csrf_field() }}
 
@@ -24,13 +24,24 @@
                                     <div class="col-sm-10">
 
 
-                                        @if ($col=='kategori')
-                                            <select  name="{{$col}}" class="custom-select custom-select-sm {{ $errors->has($col) ? ' is-invalid' : '' }}">
-                                                <option class="m-2" value="">-Pilih-</option>
-                                                <option class="m-2" value="Sandang" {{old($col,$model->$col)=="Sandang"?"selected":"" }}>Sandang</option>
-                                                <option class="m-2" value="Pangan" {{old($col,$model->$col)=="Pangan"?"selected":"" }}>Pangan</option>
-                                                <option class="m-2" value="Papan" {{old($col,$model->$col)=="Papan"?"selected":"" }}>Papan</option>
-                                            </select>
+                                        @if ($col=='id_lokasi')
+                                        <select  name="{{$col}}" class="custom-select custom-select-sm {{ $errors->has($col) ? ' is-invalid' : '' }}">
+                                            <option class="m-2" value="">-Lokasi-</option>
+
+                                            @foreach ($lokasi as $l)
+                                            <option class="m-2" value="{{$l->id}}" {{old($col,$model->$col)==$l->id?"selected":"" }}>{{$l->nama}}</option>
+                                            @endforeach
+
+                                        </select>
+                                        @elseif($col=='id_komoditas')
+                                        <select  name="{{$col}}" class="custom-select custom-select-sm {{ $errors->has($col) ? ' is-invalid' : '' }}">
+                                            <option class="m-2" value="">-Komoditas-</option>
+
+                                            @foreach ($komoditas as $k)
+                                            <option class="m-2" value="{{$k->id}}" {{old($col,$model->$col)==$k->id?"selected":"" }}>{{$k->nama}}</option>
+                                            @endforeach
+
+                                        </select>
                                         @else
                                             <input name="{{$col}}" type="text"
                                             class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col,$model->$col) }}"

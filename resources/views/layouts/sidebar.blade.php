@@ -78,7 +78,7 @@
                     </a>
                 </li>
                 <li >
-                    <a href="#" >
+                    <a href="{{ route('instansi') }}" >
                         <i class="fas fa-store small"></i>
                         Instansi
                     </a>

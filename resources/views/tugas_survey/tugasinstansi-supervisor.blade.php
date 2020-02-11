@@ -131,8 +131,8 @@
                                         </span>
                                         <div class="dropdown-menu">
 
-                                            <a class="dropdown-item small" href="{{ route('user.edit', ['id'=>$t->id]) }}">Edit</a>
-                                            <form style="display: inline;" method="post" action="{{ route('user.destroy', ['id'=>$t->id]) }}">
+                                            <a class="dropdown-item small" href="{{ route('tugas_survey.edit', ['id'=>$t->id]) }}">Edit</a>
+                                            <form style="display: inline;" method="post" action="{{ route('tugas_survey.destroy', ['id'=>$t->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 {{ csrf_field()}}
                                                 <button class="dropdown-item small text-danger" >Hapus</button>

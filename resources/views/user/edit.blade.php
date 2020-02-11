@@ -14,7 +14,13 @@
                 <div class="container">
                     <div class="card-body">
 
-                        <form action="{{ route('user.update', ['id'=>$user->id]) }}" method="post">
+                        <form action="
+                        @if (auth::user()->hasRole('Supervisor'))
+                        {{ route('user.updateBySupervisor', ['id'=>$user->id]) }}
+                        @else
+                        {{ route('user.update', ['id'=>$user->id]) }}
+                        @endif
+                        " method="post">
                             <input type="hidden" name="_method" value="put">
                             {{ csrf_field() }}
 

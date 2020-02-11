@@ -178,6 +178,7 @@ class SurveyController extends Controller
             $query
             ->where('id_instansi', $survey->tugas->id_instansi)
             ->where('id_komoditas', $survey->tugas->id_komoditas)
+            // // ->where('id_tugas_survey', $survey->tugas->id_tugas_survey)
             ;
         })
         ->where('valid', 1)

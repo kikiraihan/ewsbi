@@ -30,6 +30,16 @@ class SurveyTableSeeder extends Seeder
             $survey->kenaikan =$faker->randomElement(['naik','stabil','turun']);
             $survey->save();
 
+            // tinker
+            // $survey=new Survey;
+            // $survey->id_user =3;
+            // $survey->id_tugas_survey =17;
+            // $survey->harga =2000;
+            // $survey->merek ="ini merek";
+            // $survey->valid = 0;
+            // $survey->counted_at = "2020-02-10 14:07:18";
+            // $survey->kenaikan ="stabil";
+            // $survey->save();
         }
     }
 }

@@ -111,7 +111,7 @@
                                             </span>
                                             <div class="dropdown-menu">
 
-                                                {{-- <a class="dropdown-item small" href="{{ route('user.edit', ['id'=>$lok->id]) }}">Edit</a> --}}
+                                                <a class="dropdown-item small" href="{{ route('lokasi.edit', ['id'=>$lok->id]) }}">Edit</a>
                                                 <form style="display: inline;" method="post" action="{{ route('lokasi.destroy', ['id'=>$lok->id]) }}">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     {{ csrf_field()}}

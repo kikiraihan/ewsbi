@@ -5,18 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Instansi;
 
 use App\Models\Komoditas;
-use App\Models\TugasSurvey;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class KomoditasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
 
@@ -27,86 +22,81 @@ class KomoditasController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $pilihan=PilihanKomoditas::all();
-        $instansi=Instansi::get(['nama_instansi','id']);
-        $komoditas=new Komoditas;
-        $columns = $komoditas->getFillable();
 
-        // dd($instansi);
+    // public function create()
+    // {
+    //     $pilihan=PilihanKomoditas::all();
+    //     $instansi=Instansi::get(['nama_instansi','id']);
+    //     $komoditas=new Komoditas;
+    //     $columns = $komoditas->getFillable();
 
-        return view('komoditas.create',compact(['pilihan','columns','instansi']));
-    }
+    //     // dd($instansi);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    //     return view('komoditas.create',compact(['pilihan','columns','instansi']));
+    // }
+
+
     public function store(Request $request)
     {
-
-        dd($request->all());
+        // dd($request->all());
 
         $this->validate($request, [
-            // "kategori" =>"required|in:Surveyor,Supervisor,Admin",
-            // "name" =>"required|string",
-            // "email" =>"required|email|unique:users",
-            // "password" =>"required|min:6",
-            // "id_instansi" => "required",
-            // "username" => "required|unique:users",
+            'nama'=>"required|string",
+            'kategori'=>"required|in:Sandang,Pangan,Papan",
+            'satuan'=>"required|string",
         ]);
+
+        $komoditas= new Komoditas;
+        $columns = $komoditas->getFillable();
+        foreach($columns as $col){
+            $komoditas->$col=$request->$col;
+        }
+        $komoditas->save();
+
+        return redirect()->route('komoditas');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $model=Komoditas::find($id);
+        $columns = $model->getFillable();
+
+        return view('komoditas.edit',compact(['model','columns']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+
+        //validasi
+        $CustomMessages = [
+
+            'required'=>'Kolom :attribute tidak boleh kosong',
+
+        ];
+
+        $this->validate($request, [
+            'nama'=>"required|string",
+            'kategori'=>"required|in:Sandang,Pangan,Papan",
+            'satuan'=>"required|string",
+        ],$CustomMessages);
+
+        //simpan
+        $komoditas= Komoditas::find($id);
+
+        $komoditas->nama=$request->nama;
+        $komoditas->kategori=$request->kategori;
+        $komoditas->satuan=$request->satuan;
+        $komoditas->save();
+
+        return redirect()->route('komoditas');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        Komoditas::find($id)
+            ->delete();
+        return redirect()->route('komoditas');
     }
 }

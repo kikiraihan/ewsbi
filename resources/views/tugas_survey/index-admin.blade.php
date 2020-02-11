@@ -63,7 +63,7 @@
                                         </span>
                                         <div class="dropdown-menu">
 
-                                            <a class="dropdown-item small" href="{{ route('user.edit', ['id'=>$kom->id]) }}">Edit</a>
+                                            {{-- <a class="dropdown-item small" href="{{ route('user.edit', ['id'=>$kom->id]) }}">Edit</a> --}}
                                             <form style="display: inline;" method="post" action="{{ route('user.destroy', ['id'=>$kom->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 {{ csrf_field()}}

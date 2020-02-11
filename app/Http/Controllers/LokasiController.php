@@ -38,51 +38,63 @@ class LokasiController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+
+        $this->validate($request, [
+            'nama'=>"required|string",
+            'jenis_pasar'=>"required|string",
+            'alamat'=>"required|string",
+        ]);
+
+        $lokasi= new Lokasi;
+        $columns = $lokasi->getFillable();
+        foreach($columns as $col){
+            $lokasi->$col=$request->$col;
+        }
+        $lokasi->save();
+
+        return redirect()->route('lokasi');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $lokasi=Lokasi::find($id);
+        $columns = $lokasi->getFillable();
+
+        return view('lokasi.edit',compact(['lokasi','columns']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
-        //
+        //validasi
+        $CustomMessages = [
+            'required'=>'Kolom :attribute tidak boleh kosong',
+        ];
+
+        $this->validate($request, [
+            'nama'=>"required|string",
+            'jenis_pasar'=>"required|string",
+            'alamat'=>"required|string",
+        ],$CustomMessages);
+
+        //simpan
+        $lokasi= Lokasi::find($id);
+
+        $lokasi->nama=$request->nama;
+        $lokasi->jenis_pasar=$request->jenis_pasar;
+        $lokasi->alamat=$request->alamat;
+        $lokasi->save();
+
+        return redirect()->route('lokasi');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        Lokasi::find($id)
+            ->delete();
+        return redirect()->route('lokasi');
     }
 }

@@ -29,7 +29,6 @@ class TugasSurveyController extends Controller
 
         // dd($komoditas);
 
-
         return view('tugas_survey.index-admin',compact(['komoditas','columns']));
     }
 
@@ -88,38 +87,39 @@ class TugasSurveyController extends Controller
         return redirect()->route('tugas_survey.instansi');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $lokasi=Lokasi::all(['nama','id']);
+        $komoditas=Komoditas::all(['nama','id']);
+
+        $model=TugasSurvey::find($id);
+        $columns = $model->getFillable();
+        unset($columns[2]);
+
+        return view('tugas_survey.edit',compact(['model','columns','lokasi','komoditas']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+
+        $CustomMessages = [
+            'required'=>'Kolom :attribute tidak boleh kosong',
+        ];
+
+        $this->validate($request, [
+            'id_komoditas'=>"required|string",
+            'id_lokasi'=>"required|string",
+        ],$CustomMessages);
+
+        //simpan
+        $tugas= TugasSurvey::find($id);
+
+        $tugas->id_komoditas=$request->id_komoditas;
+        $tugas->id_lokasi=$request->id_lokasi;
+        $tugas->save();
+
+        return redirect()->route('tugas_survey.instansi');
     }
 
     /**
@@ -130,6 +130,8 @@ class TugasSurveyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $survey=TugasSurvey::find($id);
+        $survey->delete();
+        return redirect()->route('tugas_survey.instansi');
     }
 }

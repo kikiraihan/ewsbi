@@ -175,18 +175,24 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $instansi=Instansi::all();
         $user=User::find($id);
+
         // dd($user);
         $columns = $user->getFillable();
+
+        //Kalau Supervisor Hapus Kolom instansi, kategori
+        if(auth()->user()->hasRole('Supervisor'))
+        {
+            unset($columns[3],$columns[4]);
+            if(!$user->hasRole("Surveyor")) abort(404);
+
+        }
+
+        // dd($columns);
         // $columns['field'] = $user->getFillable();
         // $columns['tipe'] = ['text',''];
         // dd($columns);
@@ -194,13 +200,7 @@ class UserController extends Controller
         return view('user.edit',compact(['columns', 'user','instansi']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //validasi
@@ -221,8 +221,6 @@ class UserController extends Controller
             // "email" =>"required|email|unique:users",
             "password" =>"nullable|min:6",
         ],$CustomMessages);
-        // echo "<p class='ini'>valid</p>";
-        // dd($request->all());
 
         //simpan
         $user= User::find($id);
@@ -252,6 +250,42 @@ class UserController extends Controller
 
         return redirect()->route('user');
     }
+
+
+
+    public function updateBySupervisor(Request $request, $id)
+    {
+        //validasi
+        $CustomMessages = [
+            'unique' => 'Duplikasi data, ganti pilihan',
+            'required'=>'Kolom :attribute tidak boleh kosong',
+            'email'=>'Kolom :attribute harus email',
+            'string'=>'Kolom :attribute harus string',
+            'password.min'=>'Kolom :attribute minimal 6',
+        ];
+
+        $this->validate($request, [
+            "name" =>"required|string",
+            "email" =>['required','email',Rule::unique('users')->ignore($id),],
+            "username" =>['required','string',Rule::unique('users')->ignore($id),],
+            "password" =>"nullable|min:6",
+        ],$CustomMessages);
+
+
+        //simpan
+        $user= User::find($id);
+        // $columns = $user->getFillable();
+
+        $user->name=$request->name;
+        $user->username=$request->username;
+        $user->email=$request->email;
+        if ($request->password!=null) $user->password=$request->password;
+        $user->save();
+
+        return redirect()->route('user.surveyor');
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

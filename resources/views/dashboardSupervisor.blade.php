@@ -110,21 +110,21 @@
                                         <div class="col-md-4 p-4">
                                             <h2 class="timer count-title count-number" data-to="{{$jumlahDisurvey}}" data-speed="800"></h2>
                                             <b class="text-success">
-                                                Disurvey
+                                                Disurvey-Valid
                                             </b>
                                         </div>
 
                                         <div class="col-md-4 p-4">
-                                            <h2 class="timer count-title count-number" data-to="{{$jumlahKomoditas-$jumlahDisurvey}}" data-speed="800"></h2>
+                                            <h2 class="timer count-title count-number" data-to="{{$jumlahTugas-$jumlahDisurvey}}" data-speed="800"></h2>
                                             <b class="text-danger">
                                                 Belum Disurvey
                                             </b>
                                         </div>
 
                                         <div class="col-md-4 p-4  border-left">
-                                            <h2 class="timer count-title count-number" data-to="{{$jumlahKomoditas}}" data-speed="800"></h2>
+                                            <h2 class="timer count-title count-number" data-to="{{$jumlahTugas}}" data-speed="800"></h2>
                                             <b class="text-info">
-                                                Komoditas
+                                                Jumlah Tugas
                                             </b>
                                         </div>
 
