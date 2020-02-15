@@ -19,7 +19,7 @@ class SurveyTableSeeder extends Seeder
         // $faker=new Faker;
 
         //surveyor 3
-        for ($i=0; $i < 40; $i++)
+        for ($i=0; $i < 70; $i++)
         {
             //semua tugas surveyor
             $tugas=TugasSurvey::where('id_instansi',User::find(3)->id_instansi)->get(['id']);
@@ -32,7 +32,8 @@ class SurveyTableSeeder extends Seeder
             $survey->merek ="ini merek";
             $survey->valid = 0;
 
-            $survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            // $survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            $survey->counted_at = Carbon::now()->subDays($i)->format('Y-m-d H:i');
             $survey->kenaikan =$faker->randomElement(['naik','stabil','turun']);
             $survey->save();
         }
@@ -40,7 +41,7 @@ class SurveyTableSeeder extends Seeder
 
 
         //surveyor 4
-        for ($i=0; $i < 40; $i++)
+        for ($i=0; $i < 70; $i++)
         {
             //semua tugas surveyor
             $tugas=TugasSurvey::where('id_instansi',User::find(4)->id_instansi)->get(['id']);
@@ -53,14 +54,15 @@ class SurveyTableSeeder extends Seeder
             $survey->merek ="ini merek";
             $survey->valid = 0;
 
-            $survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            //$survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            $survey->counted_at = Carbon::now()->subDays($i)->format('Y-m-d H:i');
             $survey->kenaikan =$faker->randomElement(['naik','stabil','turun']);
             $survey->save();
         }
 
 
         //surveyor 5
-        for ($i=0; $i < 40; $i++)
+        for ($i=0; $i < 70; $i++)
         {
             //semua tugas surveyor
             $tugas=TugasSurvey::where('id_instansi',User::find(5)->id_instansi)->get(['id']);
@@ -73,7 +75,8 @@ class SurveyTableSeeder extends Seeder
             $survey->merek ="ini merek";
             $survey->valid = 0;
 
-            $survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            //$survey->counted_at = Carbon::now()->firstOfMonth()->add($i,'day')->format('Y-m-d H:i');//$faker->randomElement([Carbon::now(),Carbon::yesterday()]);
+            $survey->counted_at = Carbon::now()->subDays($i)->format('Y-m-d H:i');
             $survey->kenaikan =$faker->randomElement(['naik','stabil','turun']);
             $survey->save();
         }

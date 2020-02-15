@@ -14,7 +14,7 @@
                 <div class="container">
                     <div class="card-body">
 
-                        <form action="{{ route('user.update', ['id'=>$user->id]) }}" method="post">
+                        <form action="{{ route('survey.update', ['id'=>$survey->id]) }}" method="post">
                             <input type="hidden" name="_method" value="put">
                             {{ csrf_field() }}
 
@@ -23,28 +23,16 @@
                                     <label class="col-sm-2 col-form-label col-form-label-sm text-capitalize" for="{{$col}}">{{$col}} </label>
                                     <div class="col-sm-10">
 
-                                        @if ($col=='kategori')
 
-                                            <select  name="{{$col}}" class="custom-select custom-select-sm {{ $errors->has($col) ? ' is-invalid' : '' }}">
-                                                <option class="m-2" value="">-Pilih-</option>
-                                                <option class="m-2" value="Surveyor" {{old($col,$user->$col)=="Surveyor"?"selected":"" }}>Surveyor</option>
-                                                <option class="m-2" value="Supervisor" {{old($col,$user->$col)=="Supervisor"?"selected":"" }}>Supervisor</option>
-                                                <option class="m-2" value="Admin" {{old($col,$user->$col)=="Admin"?"selected":"" }}>Admin</option>
-                                            </select>
 
-                                        @elseif ($col=='password')
-                                            <input name="{{$col}}" type="password"
-                                            class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col) }}"
-                                            id="{{$col}}" placeholder="Masukan {{$col}}">
-
-                                        @elseif ($col=="instansi")
-                                            <input name="{{$col}}" type="text"
-                                            class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col,$user->instansi->nama_instansi) }}"
-                                            id="{{$col}}" placeholder="Masukan {{$col}}">
+                                        @if ($col=="id_tugas_survey")
+                                            <div>: {{$survey->tugas->lokasi->nama}} - {{$survey->tugas->komoditas->nama}} </div>
                                         @else
                                             <input name="{{$col}}" type="text"
-                                            class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}" value="{{ old($col,$user->$col) }}"
+                                            class="form-control form-control-sm {{ $errors->has($col) ? ' is-invalid' : '' }}"
+                                            value="{{ old($col,$survey->$col) }}"
                                             id="{{$col}}" placeholder="Masukan {{$col}}">
+
                                         @endif
 
                                         @if ($errors->has($col))

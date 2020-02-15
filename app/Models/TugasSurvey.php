@@ -35,6 +35,17 @@ class TugasSurvey extends Model
         return $this->hasMany('App\Models\Survey', 'id_tugas_survey');
     }
 
+    public function surveysterakhir()
+    {
+        //list survey terakhir, kemarin, dan valid
+        return $this->hasMany('App\Models\Survey', 'id_tugas_survey')
+        // ->where('counted_at', '<' ,Carbon::now()// kondisi kemarin, tdak terlalu perlu soalnya.. sudah diurutkan dari yang terbaru dan valid
+        ->where('valid', 1)
+        ->orderBy('counted_at','DESC')
+        // ->take(1);
+        ;
+    }
+
 
 
 

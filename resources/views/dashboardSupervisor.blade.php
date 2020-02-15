@@ -48,8 +48,8 @@
                                         <li class="list-group-item text-left small">Otorisasi : <span class="float-right small ">{{auth::user()->kategori}}</span> </li>
                                     </ul>
 
-                                    <button class="btn btn-sm btn-block mt-4 ">Edit</button>
-
+                                    {{-- <button class="btn btn-sm btn-block mt-4 ">Edit</button> --}}
+                                    <a href="{{ route('tugas_survey.instansi') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
 
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                 <div class="card-body">
 
 
-                                    <h5>Tugas Survey</h5><br>
+                                    <div class="font-weight-bold text-secondary">Tugas Survey</div><br>
 
                                     @foreach ($tugas as $key=>$tgs)
 
@@ -86,11 +86,11 @@
                                     </table>
 
 
-                                    <br><br>
+                                    <br>
                                     @endforeach
 
 
-                                    {{-- <button class="btn btn-sm btn-block mt-4 "></button> --}}
+                                    <a href="{{ route('tugas_survey.instansi') }}" class="btn btn-sm btn-block mt-4 btn-info">Komoditas</a>
 
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
 
 
                                 {{-- Tugas Survey --}}
-                                <div class="col-lg-12">
+                                {{-- <div class="col-lg-12">
                                     <div class="card  bg-light">
                                         <div class="card-body">
 
@@ -171,7 +171,6 @@
                                                         @foreach ($tgs as $t)
                                                         <tr class="text-left small">
                                                             <td class="text-left">
-                                                                {{-- Email : <span class="float-right small ">{{auth::user()->email}}</span>  --}}
                                                                 {{ $t->komoditas->nama }}
                                                             </td>
                                                             <td class="text-right">
@@ -187,11 +186,9 @@
                                             </div>
 
 
-                                            {{-- <button class="btn btn-sm btn-block mt-4 "></button> --}}
-
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
 
 

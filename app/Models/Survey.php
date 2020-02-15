@@ -14,7 +14,7 @@ class Survey extends Model
         'valid',
         'counted_at',
         'kenaikan',
-        // 'komentar',
+        'komentar',
     ];
 
 

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lokasi;
+use App\Mail\NotifKenaikan;
+use App\Models\Komoditas;
 use App\Models\Survey;
 use App\Models\TugasSurvey;
 // use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Traits\chartTrait;
 use Illuminate\Support\Carbon;
 
@@ -29,7 +33,7 @@ class SurveyController extends Controller
             $query
             ->where('valid',1)
             ->where('counted_at', '>=', $week)
-            ->orderBy('counted_at','ASC')
+            ->orderBy('counted_at','DESC')
             ;
         })
         ->orderBy('id_lokasi','ASC')
@@ -52,22 +56,49 @@ class SurveyController extends Controller
 
     public function mylist()
     {
+
         // echo"<a href='http://ewsbi.kongkong.web.id/survey/chart'>Klik</a> <br><br>";
         // dd('sedang maintenance');
 
         $week=Carbon::now()->startOfWeek()->format('Y-m-d H:i');
 
+        //minggu ini
         $survey=Survey::with(['user','tugas'])
+        ->where('counted_at', '>=', $week)
         ->where('id_user', Auth::user()->id )
-        ->orderBy('counted_at','ASC')
+        // ->where('valid', 0 )
+        ->orderBy('counted_at','DESC')
         ->get()
-        // ->groupBy('id_komoditas')
         ;
 
+        // terdahulu
+        $surveyTerdahulu=Survey::with(['user','tugas'])
+        ->where('counted_at', '<', $week)
+        ->where('id_user', Auth::user()->id )
+        // ->where('valid', 0 )
+        ->orderBy('counted_at','DESC')
+        ->get()
+        ;
+
+
         $columns = Survey::first()->getFillable();
+        // dd($columns);
         $waktu=Carbon::now()->locale('in');
 
-        return view('survey.list-surveyor',compact(['survey','columns','waktu']));
+
+        $tugas=TugasSurvey::with(['instansi','lokasi','komoditas'])
+            ->where('id_instansi', Auth::user()->id_instansi)
+            ->orderBy('id_lokasi')
+            ->get()
+            // ->groupBy('id_lokasi')
+            // ->dd()
+            ;
+
+
+        $lokasi=Lokasi::all(['nama','id']);
+        $komoditas=Komoditas::all(['nama','id']);
+
+        return view('survey.list-surveyor',compact(['survey','columns','waktu','lokasi','komoditas','tugas','surveyTerdahulu']));
     }
 
 
@@ -115,7 +146,7 @@ class SurveyController extends Controller
         })
         ->where('valid',1)
         ->where('counted_at', '>=', $week)
-        ->orderBy('counted_at','ASC')
+        ->orderBy('counted_at','DESC')
         ->get()
         // ->dd()
         ;
@@ -129,11 +160,14 @@ class SurveyController extends Controller
         })
         ->where('valid',0)
         ->where('counted_at', '>=', $week)
-        ->orderBy('counted_at','ASC')
+        ->orderBy('counted_at','DESC')
         ->get()
         ->sortBy(function ($product, $key) {
             return $product->tugas->id_lokasi;
-        });
+        })
+        // ->sortBy(function ($product, $key) {
+        //     return $product->tugas->id_komoditas;
+        // });
         // ->dd()
         ;
 
@@ -147,7 +181,7 @@ class SurveyController extends Controller
         })
         ->where('valid',0)
         ->where('counted_at', '<', $week)
-        ->orderBy('counted_at','ASC')
+        ->orderBy('counted_at','DESC')
         ->get()
         // ->dd()
         ;
@@ -187,9 +221,16 @@ class SurveyController extends Controller
 
         // dd($cek);
 
+
+
         if ($cek <= 0) {
             $survey->valid=1;
             $survey->save();
+
+            //kirim email jika naik
+            if ($survey->kenaikan=='naik')
+            Mail::to("mohzulkiflikatili@gmail.com")->send(new NotifKenaikan($survey));
+
             return redirect()->route('survey.aproval');
         }
         else{
@@ -227,15 +268,73 @@ class SurveyController extends Controller
         //
     }
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+
+
+        //validasi
+        $CustomMessages = [
+            'number' => 'Kolom :attribute, harus berupa angka',
+            'string' => 'Kolom :attribute, harus berupa angka',
+            'required'=>'Kolom :attribute tidak boleh kosong',
+        ];
+
+        $this->validate($request, [
+            'id_tugas_survey'=>"required|string",
+            'harga'=>"required|string",
+            'merek'=>"required|string",
+            'komentar'=>"required|string",
+        ],$CustomMessages);
+
+        // dd('valid');
+
+        //--------- dari form
+        //id_tugas_survey
+        //harga
+        //merek
+        //komentar
+
+        //--------- generate
+        //id_user
+        //id
+        //valid
+        //kenaikan
+        //counted_at
+
+        //created_at
+        //update_at
+
+        $survey= new Survey;
+        $survey->id_tugas_survey=$request->id_tugas_survey;
+        $survey->harga=$request->harga;
+        $survey->merek=$request->merek;
+        $survey->komentar=$request->komentar;
+
+        $survey->id_user=$request->user()->id;
+        $survey->valid=0;
+        $survey->counted_at = Carbon::now();
+
+
+
+
+        //jika survey sebelumnya < survey sekarang, maka naik
+        //jika survey sebelumnya > survey sekarang, maka turun
+        //jika survey sebelumnya = survey sekarang, stabil
+        if($survey->tugas->surveysterakhir->isEmpty())
+        {
+            $survey->kenaikan="stabil";
+        }
+        else
+        {
+            if($topSurvey->harga < $request->harga) $survey->kenaikan="naik";
+            elseif($topSurvey->harga > $request->harga) $survey->kenaikan="turun";
+            elseif($topSurvey->harga = $request->harga) $survey->kenaikan="stabil";
+        }
+
+        $survey->save();
+
+        return redirect()->route('survey.mylist');
     }
 
     /**
@@ -249,35 +348,85 @@ class SurveyController extends Controller
         //
     }
 
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
+
+
+
+
     public function edit($id)
     {
-        //
+        $survey=Survey::find($id);
+        $columns = $survey->getFillable();
+        unset($columns[0],$columns[4],$columns[5],$columns[6]);
+
+        // dd($survey->tugas->komoditas->nama);
+        // dd();
+        // 1 => "id_tugas_survey"
+        // 2 => "harga"
+        // 3 => "merek"
+        // 7 => "komentar"
+
+
+        // 0 => "id_user"
+
+
+        // 4 => "valid"
+        // 5 => "counted_at"
+        // 6 => "kenaikan"
+
+        return view('survey.edit',compact(['survey','columns']));
     }
 
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
+
     public function update(Request $request, $id)
     {
-        //
+
+
+        //validasi
+        $CustomMessages = [
+            'number' => 'Kolom :attribute, harus berupa angka',
+            'string' => 'Kolom :attribute, harus berupa angka',
+            'required'=>'Kolom :attribute tidak boleh kosong',
+        ];
+
+        $this->validate($request, [
+            'harga'=>"required|string",
+            'merek'=>"required|string",
+            'komentar'=>"required|string",
+        ], $CustomMessages);
+
+        //simpan
+        $survey= Survey::find($id);
+
+        $survey->harga=$request->harga;
+        $survey->merek=$request->merek;
+        $survey->komentar=$request->komentar;
+
+
+        //jika survey sebelumnya < survey sekarang, maka naik
+        //jika survey sebelumnya > survey sekarang, maka turun
+        //jika survey sebelumnya = survey sekarang, stabil
+        if($survey->tugas->surveysterakhir->isEmpty())
+        {
+            $survey->kenaikan="stabil";
+        }
+        else
+        {
+            if($survey->tugas->surveysterakhir->first()->harga < $request->harga) $survey->kenaikan="naik";
+            elseif($survey->tugas->surveysterakhir->first()->harga > $request->harga) $survey->kenaikan="turun";
+            elseif($survey->tugas->surveysterakhir->first()->harga = $request->harga) $survey->kenaikan="stabil";
+        }
+
+        $survey->save();
+
+        return redirect()->route('survey.mylist');
     }
 
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
-    */
+
+
+
+
+
+
     public function destroy($id)
     {
         // dd($id.' Akan dihapus');
@@ -291,7 +440,6 @@ class SurveyController extends Controller
         else if (Auth::user()->hasRole('Surveyor'))
         return redirect()->route('survey.mylist');
     }
-
 
 
 
@@ -316,9 +464,6 @@ class SurveyController extends Controller
         }
 
     }
-
-
-
 
 
 

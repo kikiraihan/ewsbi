@@ -24,7 +24,7 @@
 
                         {{-- /* PROFILE */ --}}
                         <!--Profile Card 4-->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <div class="card ">
                                 {{-- <img class="card-img-top" src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" style="overflow:hidden"> --}}
                                 <div class="card-body">
@@ -48,8 +48,8 @@
                                         <li class="list-group-item text-left small">Otorisasi : <span class="float-right small ">{{auth::user()->kategori}}</span> </li>
                                     </ul>
 
-                                    <button class="btn btn-sm btn-block mt-4 ">Edit</button>
-
+                                    {{-- <button class="btn btn-sm btn-block mt-4 ">Edit</button> --}}
+                                    <a href="{{ route('tugas_survey.instansi') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
 
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                 <div class="card-body">
 
 
-                                    <h5>Tugas Survey</h5><br>
+                                    <div class="font-weight-bold text-secondary">Tugas Survey</div><br>
 
                                     @foreach ($tugas as $key=>$tgs)
 
@@ -86,11 +86,11 @@
                                     </table>
 
 
-                                    <br><br>
+                                    <br>
                                     @endforeach
 
 
-                                    {{-- <button class="btn btn-sm btn-block mt-4 "></button> --}}
+                                    {{-- <a href="{{ route('komoditas') }}" class="btn btn-sm btn-block mt-4 btn-info">Komoditas</a> --}}
 
                                 </div>
                             </div>
@@ -98,6 +98,7 @@
 
 
                         </div>
+
 
 
 
