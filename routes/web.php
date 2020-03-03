@@ -29,7 +29,9 @@ Route::group(['prefix' => 'user'], function() {
     Route::get('/surveyor', 'UserController@tampilSurveyorInstansi')->name('user.surveyor');
     // Route::get('/search', 'UserController@search')->name('user.search');
     Route::get('/create', 'UserController@create')->name('user.create');
+    Route::get('/edit/biodata', 'UserController@editBiodata')->name('user.edit.biodata');
     Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
+    Route::put('/update/biodata/{id}', 'UserController@updateBiodata')->name('user.update.biodata');
     Route::put('/update/{id}', 'UserController@update')->name('user.update');
     Route::put('/update-bySupervisor/{id}', 'UserController@updateBySupervisor')->name('user.updateBySupervisor');
     // Route::get('/{id}', 'UserController@show')->name('user.show');

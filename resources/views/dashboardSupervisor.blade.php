@@ -49,7 +49,7 @@
                                     </ul>
 
                                     {{-- <button class="btn btn-sm btn-block mt-4 ">Edit</button> --}}
-                                    <a href="{{ route('tugas_survey.instansi') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
+                                    <a href="{{ route('user.edit.biodata') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
 
                                 </div>
                             </div>
@@ -199,39 +199,47 @@
                                 <div class="col-lg-12">
                                     <div class="counter row m-0 border border-grey">
                                         <div class="col-lg-12 ">
-                                            <b class="text-secondary"> Survey </b>
+                                            <b class="text-secondary"> Harga Terkini </b>
                                         </div>
 
 
+                                        @if (!$isisurvey->isEmpty())
                                         @foreach ($isisurvey as $s)
                                         <div class="col-lg-4">
                                             <div class="counter">
                                                 {{-- <i class="fa fa-code fa-2x"></i> --}}
                                                 <b class="title-counter
-                                                @if( $s->survey[0]->kenaikan =='naik')
+                                                @if( $s[0]->surveysterakhir[0]->kenaikan =='naik')
                                                 title-counter-naik
-                                                @elseif ($s->survey[0]->kenaikan=='turun')
+                                                @elseif ($s[0]->surveysterakhir[0]->kenaikan=='turun')
                                                 title-counter-turun
                                                 @endif
                                                 ">
-                                                @if ($s->survey[0]->kenaikan=='naik')
+                                                @if ($s[0]->surveysterakhir[0]->kenaikan=='naik')
                                                 <i class="fas fa-long-arrow-alt-up"></i>
-                                                @elseif ($s->survey[0]->kenaikan=='stabil')
+                                                @elseif ($s[0]->surveysterakhir[0]->kenaikan=='stabil')
                                                 <i class="far fa-dot-circle"></i>
-                                                @elseif ($s->survey[0]->kenaikan=='turun')
+                                                @elseif ($s[0]->surveysterakhir[0]->kenaikan=='turun')
                                                 <i class="fas fa-long-arrow-alt-down"></i>
                                                 @endif
-                                                {{$s->komoditas->nama}}
+                                                {{$s[0]->komoditas->nama}}
                                             </b>
                                             {{-- <b class="title-counter">Rp.</b> --}}
-                                            <h2 class="timer count-title count-number" data-to="{{$s->survey[0]->harga}}" data-speed="1500"></h2>
+                                            <h2 class="timer count-title count-number" data-to="{{$s[0]->surveysterakhir[0]->harga}}" data-speed="1500"></h2>
                                             <p class="count-text ">
-                                                Rupiah/{{$s->komoditas->satuan}}
+                                                Rupiah/{{$s[0]->komoditas->satuan}}
                                                 {{-- Naik 10% --}}
+                                            </p>
+                                            <p class="count-text text-secondary">
+                                                {{-- <i class="fa fa-calendar"></i>  --}}
+                                                at {{$s[0]->surveysterakhir[0]->counted_tanggal}}
                                             </p>
                                         </div>
                                     </div>
                                     @endforeach
+                                    @else
+                                    <div class="mr-auto ml-auto text-secondary small">Kosong..</div>
+                                    @endif
 
 
 

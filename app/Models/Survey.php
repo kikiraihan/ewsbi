@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Survey extends Model
 {
@@ -119,5 +120,14 @@ class Survey extends Model
             });
             //user yang berelasi ormawa dan mahasiswa, dan memiliki nama $cari di masing2 model
     }
+
+
+
+    public function getCountedTanggalAttribute()
+    {
+        $waktu=Carbon::parse($this->counted_at)->toFormattedDateString();
+        return $waktu;
+    }
+
 
 }

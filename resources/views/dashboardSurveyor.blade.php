@@ -49,7 +49,7 @@
                                     </ul>
 
                                     {{-- <button class="btn btn-sm btn-block mt-4 ">Edit</button> --}}
-                                    <a href="{{ route('tugas_survey.instansi') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
+                                    <a href="{{ route('user.edit.biodata') }}" class="btn btn-sm btn-block mt-4 btn-light">Edit</a>
 
                                 </div>
                             </div>

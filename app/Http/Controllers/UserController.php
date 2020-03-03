@@ -287,12 +287,71 @@ class UserController extends Controller
 
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function editBiodata()
+    {
+        $instansi=Instansi::all();
+        $user=User::find(Auth::user()->id);
+
+        // dd($user);
+        $columns = $user->getFillable();
+
+        //Kalau Supervisor Hapus Kolom instansi, kategori
+        if(auth()->user()->hasRole('Supervisor') OR auth()->user()->hasRole('Surveyor'))
+        {
+            unset($columns[3],$columns[4]);
+            // if(!$user->hasRole("Surveyor")) abort(404);
+
+        }
+
+        return view('user.editBiodata',compact(['columns', 'user','instansi']));
+    }
+
+
+    public function updateBiodata(Request $request, $id)
+    {
+        //validasi
+        $CustomMessages = [
+            'unique' => 'Duplikasi data, ganti pilihan',
+            'required'=>'Kolom :attribute tidak boleh kosong',
+            'email'=>'Kolom :attribute harus email',
+            'string'=>'Kolom :attribute harus string',
+            'password.min'=>'Kolom :attribute minimal 6',
+
+        ];
+
+        $this->validate($request, [
+            "name" =>"required|string",
+            "email" =>['required','email',Rule::unique('users')->ignore($id),],
+            "username" =>['required','string',Rule::unique('users')->ignore($id),],
+            "password" =>"nullable|min:6",
+        ],$CustomMessages);
+
+
+        //simpan
+        $user= User::find($id);
+        // $columns = $user->getFillable();
+
+        $user->name=$request->name;
+        $user->username=$request->username;
+        $user->email=$request->email;
+        if ($request->password!=null) $user->password=$request->password;
+        $user->save();
+
+        return redirect()->route('home');
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function destroy($id)
     {
         User::find($id)

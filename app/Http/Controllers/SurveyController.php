@@ -7,7 +7,7 @@ use App\Mail\NotifKenaikan;
 use App\Models\Komoditas;
 use App\Models\Survey;
 use App\Models\TugasSurvey;
-// use App\Models\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -227,9 +227,13 @@ class SurveyController extends Controller
             $survey->valid=1;
             $survey->save();
 
-            //kirim email jika naik
+            //kirim email ke semua lain, jika naik
             if ($survey->kenaikan=='naik')
-            Mail::to("mohzulkiflikatili@gmail.com")->send(new NotifKenaikan($survey));
+            {
+                $user=User::where('id_instansi', "!=", Auth::user()->id_instansi)->get(['email']);
+                foreach ($user as $u)
+                Mail::to($u->email)->send(new NotifKenaikan($survey));
+            }
 
             return redirect()->route('survey.aproval');
         }
@@ -327,9 +331,9 @@ class SurveyController extends Controller
         }
         else
         {
-            if($topSurvey->harga < $request->harga) $survey->kenaikan="naik";
-            elseif($topSurvey->harga > $request->harga) $survey->kenaikan="turun";
-            elseif($topSurvey->harga = $request->harga) $survey->kenaikan="stabil";
+            if($survey->tugas->surveysterakhir->first()->harga < $request->harga) $survey->kenaikan="naik";
+            elseif($survey->tugas->surveysterakhir->first()->harga > $request->harga) $survey->kenaikan="turun";
+            elseif($survey->tugas->surveysterakhir->first()->harga = $request->harga) $survey->kenaikan="stabil";
         }
 
         $survey->save();

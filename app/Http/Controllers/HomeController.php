@@ -107,12 +107,13 @@ class HomeController extends Controller
     {
 
 
-        $taskPerKomoditas=TugasSurvey::with(['instansi','komoditas','lokasi','survey'])
+        $taskPerKomoditas=TugasSurvey::
+        with(['instansi','komoditas','lokasi','survey'])
         ->whereHas('survey', function ($query) use($week)
         {
             return $query
-            ->where('counted_at', '>=', $week)//minggu ini
-            // ->where('valid', 1)//yg valid
+            // ->where('counted_at', '>=', $week)//minggu ini
+            ->where('valid', 1)//yg valid
             ->orderBy('counted_at','DESC')
             ;
         })
@@ -125,10 +126,11 @@ class HomeController extends Controller
 
         //setelah diurutkan dan grup per komoditas, kemudian
         //memecah dan mengambil data pertama (paling tinggi tanggal)..
-        foreach ($taskPerKomoditas as $key => $arrayKomoditasX)
-        {
-            $isisurvey[]=$arrayKomoditasX[0];
-        }
+        $isisurvey=$taskPerKomoditas;
+        // foreach ($taskPerKomoditas as $key => $arrayKomoditasX)
+        // {
+        //     $isisurvey[]=$arrayKomoditasX[0];
+        // }
 
         //------------------------------------------------------------------------------------
         // batas,    ini untuk counter
@@ -194,7 +196,7 @@ class HomeController extends Controller
         // }
 
 
-        // dd($id_komoditas);
+        // dd($isisurvey);
 
 
 
